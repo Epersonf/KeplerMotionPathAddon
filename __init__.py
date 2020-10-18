@@ -31,9 +31,9 @@ class Polygon:
         return sum / 2
 
 class Ellipse:
-    def __init__(self, name, x, y, z, a, b, precision=.1, use_left_focus=True, divisions=12):
+    def __init__(self, name, x, y, z, a, b, precision=.1, alternate_focus=True, divisions=12):
         self.name = name
-        self.use_left_focus = use_left_focus
+        self.alternate_focus = alternate_focus
         self.precision = precision
         self.x = x
         self.y = y
@@ -49,7 +49,7 @@ class Ellipse:
         squareC = math.pow(self.a, 2) - math.pow(self.b, 2)
         c = math.sqrt(abs(squareC))
         vec = [0, 0]
-        if self.use_left_focus:
+        if self.alternate_focus:
             c *= -1
         if self.a > self.b:
             vec[0] = c
@@ -122,14 +122,14 @@ class CreateEllipse(bpy.types.Operator):
     
     a: bpy.props.FloatProperty(name="Semi axis A", default=12)
     b: bpy.props.FloatProperty(name="Semi axis B", default=12)
-    use_left: bpy.props.BoolProperty(name="Use left focus", default=True)
+    alternate_focus: bpy.props.BoolProperty(name="Alternate focus", default=True)
     imprecision: bpy.props.FloatProperty(name="Imprecision", default=10, min=1, max=10)
     divisions: bpy.props.IntProperty(name="Divisions", default=12, min=1, max=1000)
     
     def execute(self, context):
         #Create Elipse
         pos = bpy.context.scene.cursor.location
-        ellipse = Ellipse("Ellipse", pos[0], pos[1], pos[2], self.a, self.b, self.imprecision/1000, self.use_left, self.divisions)
+        ellipse = Ellipse("Ellipse", pos[0], pos[1], pos[2], self.a, self.b, self.imprecision/1000, self.alternate_focus, self.divisions)
         ellipse.create_mesh()
         ellipse.create_object()
         ellipse.add_to_scene()
