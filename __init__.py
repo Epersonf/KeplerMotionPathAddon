@@ -2,7 +2,7 @@ bl_info = {
     "name": "Kepler Motion Path",
     "author": "Eperson",
     "description": "Generates an ellipse",
-    "blender": (2, 90, 1)
+    "blender": (2, 83, 7)
 }
 
 import bpy
@@ -117,13 +117,19 @@ class Ellipse:
 class CreateEllipse(bpy.types.Operator):
     """Ellipse Creation Script"""      # Use this as a tooltip for menu items and buttons.
     bl_idname = "object.create_ellipse"        # Unique identifier for buttons and menu items to reference.
-    bl_label = "Create an ellipse"         # Display name in the interface.
+    bl_label = "Create an Ellipse"         # Display name in the interface.
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
-
+    
+    a: bpy.props.FloatProperty(name="Semi axis A", default=12)
+    b: bpy.props.FloatProperty(name="Semi axis B", default=12)
+    use_left: bpy.props.BoolProperty(name="Use left focus", default=True)
+    imprecision: bpy.props.FloatProperty(name="Imprecision", default=10, min=1, max=10)
+    divisions: bpy.props.IntProperty(name="Divisions", default=12, min=1, max=1000)
+    
     def execute(self, context):
         #Create Elipse
         pos = bpy.context.scene.cursor.location
-        ellipse = Ellipse("Ellipse", pos[0], pos[1], pos[2], 40, 20, .001, True, 50)
+        ellipse = Ellipse("Ellipse", pos[0], pos[1], pos[2], self.a, self.b, self.imprecision/1000, self.use_left, self.divisions)
         ellipse.create_mesh()
         ellipse.create_object()
         ellipse.add_to_scene()
