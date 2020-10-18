@@ -1,6 +1,6 @@
 bl_info = {
     "name": "Kepler Motion Path",
-    "author": "Eperson",
+    "author": "Eperson and Francisco Meirelles",
     "description": "Generates an ellipse",
     "blender": (2, 83, 7)
 }
