@@ -64,14 +64,14 @@ class Ellipse:
         edges = []
         
         focus = self.get_focus()
-        polygon = Polygon(self.x + focus[0], self.z + focus[1])
+        polygon = Polygon(focus[0], focus[1])
         
         i = 0
         h = 1
-        dots.append((self.x + focus[0], self.y, self.z + focus[1]))
+        dots.append((focus[0], 0, focus[1]))
         while True:
             
-            actualPos = (self.x + self.a*math.cos(i), self.y, self.z + self.b*math.sin(i))
+            actualPos = (self.a*math.cos(i), 0, self.b*math.sin(i))
             dots.append(actualPos)
             
             i += self.precision
@@ -98,7 +98,6 @@ class Ellipse:
     
     def create_mesh(self):
         self.mesh = bpy.data.meshes.new(self.name + "Mesh")
-        
         geometry = self.generate_geometry()
         self.mesh.from_pydata(geometry["dots"], geometry["edges"], [])
         
@@ -106,6 +105,7 @@ class Ellipse:
     
     def create_object(self):
         self.object = bpy.data.objects.new(self.name, self.mesh)
+        self.object.location = (self.x, self.y, self.z)
         self.object.show_name = True
         self.mesh.update()
         return self.object
