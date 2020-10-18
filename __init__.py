@@ -64,7 +64,7 @@ class Ellipse:
         edges = []
         
         focus = self.get_focus()
-        polygon = Polygon(focus[0], focus[1])
+        polygon = Polygon(self.x + focus[0], self.z + focus[1])
         
         i = 0
         h = 1
