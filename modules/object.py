@@ -16,3 +16,6 @@ class Object:
         if self.object is None:
             return
         self.object.select_set(False)
+    
+    def set_pos(self, pos):
+        self.object.location = pos
