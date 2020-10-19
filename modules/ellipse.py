@@ -2,9 +2,10 @@ import bpy
 import math
 import mathutils
 from .polygon import Polygon
+from .object import Object
 
-class Ellipse:
-    def __init__(self, name, x, y, z, a, b, precision=.1, alternate_focus=True, divisions=12):
+class Ellipse(Object):
+    def __init__(self, name, x, y, z, a, b, precision=.1, alternate_focus=True, divisions=12, drawArea=True):
         self.name = name
         self.alternate_focus = alternate_focus
         self.precision = precision
@@ -12,6 +13,7 @@ class Ellipse:
         self.a = a
         self.b = b
         self.divisions = divisions
+        self.drawArea = drawArea
         self.create_mesh()
         self.create_object()
         self.add_to_scene()
@@ -34,6 +36,8 @@ class Ellipse:
     def generate_geometry(self):
         areaSingle = self.get_area() / self.divisions
         
+        self.areaPoints = []
+
         dots = []
         edges = []
         
@@ -58,11 +62,16 @@ class Ellipse:
             polygon.add_point(actualPos[0], actualPos[2])
             if polygon.calculate_area() >= areaSingle:
                 polygon.clear_area()
-                edges.append((0, h))
+                if self.drawArea:
+                    edges.append((0, h))
+                self.areaPoints.append(i/(2*math.pi))
+                print(i/(2*math.pi))
             
             h += 1
         
-        edges.append((len(dots) - 1, 0))
+        if self.drawArea:
+            edges.append((len(dots) - 1, 0))
+        self.areaPoints.append(1)
         edges.append((len(dots) - 1, 1))
         
         return {
@@ -74,7 +83,6 @@ class Ellipse:
         self.mesh = bpy.data.meshes.new(self.name + "Mesh")
         geometry = self.generate_geometry()
         self.mesh.from_pydata(geometry["dots"], geometry["edges"], [])
-        
         return self.mesh
     
     def create_object(self):
