@@ -12,7 +12,7 @@ class CreateEllipse(bpy.types.Operator):
     a: bpy.props.FloatProperty(name="Semi axis A", default=12, min=.1)
     b: bpy.props.FloatProperty(name="Semi axis B", default=12, min=.1)
     alternate_focus: bpy.props.BoolProperty(name="Alternate focus", default=True)
-    imprecision: bpy.props.FloatProperty(name="Imprecision", default=10, min=.1, max=100)
+    imprecision: bpy.props.FloatProperty(name="Imprecision", default=10, min=.5, max=100)
     divisions: bpy.props.IntProperty(name="Divisions", default=12, min=1, max=100000)
     
     def execute(self, context):
@@ -31,15 +31,15 @@ class GenerateMotion(bpy.types.Operator):
     a: bpy.props.FloatProperty(name="Semi axis A", default=12, min=.1)
     b: bpy.props.FloatProperty(name="Semi axis B", default=12, min=.1)
     alternate_focus: bpy.props.BoolProperty(name="Alternate focus", default=True)
-    imprecision: bpy.props.FloatProperty(name="Imprecision", default=10, min=.1, max=100)
-    divisions: bpy.props.IntProperty(name="Divisions", default=12, min=1, max=100000)
+    imprecision: bpy.props.FloatProperty(name="Imprecision", default=10, min=.5, max=100)
+    divisions: bpy.props.IntProperty(name="Divisions", default=2000, min=1, max=100000)
 
     def execute(self, context):
-        pos = bpy.context.scene.cursor.location
+        if bpy.context.object is None:
+            return {"CANCELLED"}
+        pos = bpy.context.object.location
         ellipse = Ellipse("Ellipse", pos[0], pos[1], pos[2], self.a, self.b, self.imprecision/1000, self.alternate_focus, self.divisions, False)
         planet = Planet(bpy.context.object)
-        if planet is None:
-            return {"CANCELLED"}
 
         #unselect planet
         planet.unselect()
@@ -59,18 +59,19 @@ class GenerateMotion(bpy.types.Operator):
         #add Ellipse as target
         bpy.context.object.constraints["Follow Path"].target = ellipse.object
 
-        #set fixed position
-        bpy.context.object.constraints["Follow Path"].use_fixed_location = True
-
         #select ellipse and switch to edit mode to fix bug
         ellipse.select(True)
         bpy.ops.object.editmode_toggle()
         bpy.ops.object.editmode_toggle()
 
         #generate animation
+        current_frame = bpy.context.scene.frame_current
         for i in range(len(ellipse.areaPoints)):
-            planet.object.keyframe_insert(data_path='constraints["Follow Path"].offset_factor', frame=i * self.frame_step)
-            planet.object.constraints["Follow Path"].offset_factor = ellipse.areaPoints[i]
+            planet.object.keyframe_insert(data_path='constraints["Follow Path"].offset', frame=current_frame + i * self.frame_step)
+            planet.object.constraints["Follow Path"].offset = ellipse.areaPoints[i]
+        
+        #make animation cyclic
+        planet.select(True)
 
         return {"FINISHED"}
 

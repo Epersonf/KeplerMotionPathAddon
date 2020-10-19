@@ -5,10 +5,10 @@ from .polygon import Polygon
 from .object import Object
 
 class Ellipse(Object):
-    def __init__(self, name, x, y, z, a, b, precision=.1, alternate_focus=True, divisions=12, drawArea=True):
+    def __init__(self, name, x, y, z, a, b, imprecision=.1, alternate_focus=True, divisions=12, drawArea=True):
         self.name = name
         self.alternate_focus = alternate_focus
-        self.precision = precision
+        self.imprecision = imprecision
         self.pos = (x, y, z)
         self.a = a
         self.b = b
@@ -52,7 +52,7 @@ class Ellipse(Object):
             actualPos = (self.a*math.cos(i), 0, self.b*math.sin(i))
             dots.append(actualPos)
             
-            i += self.precision
+            i += self.imprecision
             
             if i < 2*math.pi:
                 edges.append((h, h + 1))
@@ -64,14 +64,15 @@ class Ellipse(Object):
                 polygon.clear_area()
                 if self.drawArea:
                     edges.append((0, h))
-                self.areaPoints.append(i/(2*math.pi))
-                print(i/(2*math.pi))
+                self.areaPoints.append((i * 100)/(2 * math.pi))
             
             h += 1
         
         if self.drawArea:
             edges.append((len(dots) - 1, 0))
-        self.areaPoints.append(1)
+        self.areaPoints.append(100)
+        self.areaPoints.append(0)
+
         edges.append((len(dots) - 1, 1))
         
         return {
