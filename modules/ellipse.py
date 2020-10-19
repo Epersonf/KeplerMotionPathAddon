@@ -8,12 +8,13 @@ class Ellipse:
         self.name = name
         self.alternate_focus = alternate_focus
         self.precision = precision
-        self.x = x
-        self.y = y
-        self.z = z
+        self.pos = (x, y, z)
         self.a = a
         self.b = b
         self.divisions = divisions
+        self.create_mesh()
+        self.create_object()
+        self.add_to_scene()
     
     def get_area(self):
         return math.pi * self.a * self.b
@@ -78,7 +79,7 @@ class Ellipse:
     
     def create_object(self):
         self.object = bpy.data.objects.new(self.name, self.mesh)
-        self.object.location = (self.x, self.y, self.z)
+        self.object.location = self.pos
         self.object.show_name = True
         self.mesh.update()
         return self.object
