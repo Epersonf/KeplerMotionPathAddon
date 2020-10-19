@@ -5,10 +5,6 @@ bl_info = {
     "blender": (2, 83, 7)
 }
 
-import bpy
-import math
-import mathutils
-
 from .modules.menus.menus import register as registerMenus, unregister as unregisterMenus
 
 def register():
