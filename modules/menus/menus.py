@@ -12,7 +12,7 @@ class CreateEllipse(bpy.types.Operator):
     a: bpy.props.FloatProperty(name="Semi axis A", default=12, min=.1)
     b: bpy.props.FloatProperty(name="Semi axis B", default=12, min=.1)
     alternate_focus: bpy.props.BoolProperty(name="Alternate focus", default=True)
-    imprecision: bpy.props.FloatProperty(name="Imprecision", default=10, min=.5, max=100)
+    imprecision: bpy.props.FloatProperty(name="Imprecision", default=10, min=.01, max=100)
     divisions: bpy.props.IntProperty(name="Divisions", default=12, min=1, max=100000)
     
     def execute(self, context):
@@ -31,7 +31,7 @@ class GenerateMotion(bpy.types.Operator):
     a: bpy.props.FloatProperty(name="Semi axis A", default=12, min=.1)
     b: bpy.props.FloatProperty(name="Semi axis B", default=12, min=.1)
     alternate_focus: bpy.props.BoolProperty(name="Alternate focus", default=True)
-    imprecision: bpy.props.FloatProperty(name="Imprecision", default=10, min=.5, max=100)
+    imprecision: bpy.props.FloatProperty(name="Imprecision", default=10, min=.01, max=100)
     divisions: bpy.props.IntProperty(name="Divisions", default=2000, min=1, max=100000)
 
     def execute(self, context):
