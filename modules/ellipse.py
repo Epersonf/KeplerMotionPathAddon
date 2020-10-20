@@ -60,7 +60,7 @@ class Ellipse(Object):
                 break
 
             polygon.add_point(actualPos[0], actualPos[2])
-            if polygon.calculate_area() >= areaSingle:
+            if polygon.get_area() >= areaSingle:
                 polygon.clear_area()
                 if self.drawArea:
                     edges.append((0, h))

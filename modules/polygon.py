@@ -19,9 +19,9 @@ class Polygon:
         if len(self.points) > 2:
             newTriangle = self.points[-2:]
             newTriangle.append(self.points[0])
-            self.area += self.get_area(newTriangle)
+            self.area += self.calculate_area(newTriangle)
     
-    def get_area(self, points):
+    def calculate_area(self, points):
         sum = 0
         for i in range(len(points)):
             point1 = points[i]
@@ -29,5 +29,5 @@ class Polygon:
             sum += point1[0] * point2[1] - point1[1] * point2[0]
         return sum / 2
 
-    def calculate_area(self):    
+    def get_area(self):    
         return self.area
