@@ -36,6 +36,7 @@ class GenerateMotion(bpy.types.Operator):
 
     def execute(self, context):
         if bpy.context.object is None:
+            self.report({"WARNING"}, "You must select an object.")
             return {"CANCELLED"}
         pos = bpy.context.object.location
         ellipse = Ellipse("Ellipse", pos[0], pos[1], pos[2], self.a, self.b, self.imprecision/1000, self.alternate_focus, self.divisions, False)
