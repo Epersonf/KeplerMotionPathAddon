@@ -35,44 +35,58 @@ class Ellipse(Object):
     
     def generate_geometry(self):
         areaSingle = self.get_area() / self.divisions
-        
-        self.areaPoints = []
-
-        dots = []
-        edges = []
+        dots, edges, self.areaPoints = [], [], []
         
         focus = self.get_focus()
         polygon = Polygon(focus[0], focus[1])
-        
+        dots.append((focus[0], 0, focus[1]))
+
         i = 0
         h = 1
-        dots.append((focus[0], 0, focus[1]))
         while True:
             
+            #get actual point position
             actualPos = (self.a*math.cos(i), 0, self.b*math.sin(i))
+
+            #add actualPos vertice
             dots.append(actualPos)
             
-            i += self.imprecision
-            
-            if i < 2*math.pi:
-                edges.append((h, h + 1))
-            else:
+            #check if i is greater than 2PI
+            if i >= 2*math.pi:
                 break
 
+            #add ellipse edges
+            edges.append((h, h + 1))
+
+            #add a new point to the polygon
             polygon.add_point(actualPos[0], actualPos[2])
+
+            #check if area is greater than single area size
             if polygon.get_area() >= areaSingle:
+                #reset area
                 polygon.clear_area()
+
+                #draw edge from focus to area vertice
                 if self.drawArea:
                     edges.append((0, h))
-                self.areaPoints.append((i * 100)/(2 * math.pi))
+                
+                #store area vertice percentage
+                self.areaPoints.append(((i - self.imprecision) * 100)/(2 * math.pi))
             
             h += 1
+            i += self.imprecision
         
+        #create the last edge for the remaining area
         if self.drawArea:
             edges.append((len(dots) - 1, 0))
+        
+        #store the last vertice percentage to follow path constraint
         self.areaPoints.append(100)
+
+        #store a placeholder value to fix bug
         self.areaPoints.append(0)
 
+        #connects last vertice of the ellipse with the first one
         edges.append((len(dots) - 1, 1))
         
         return {
