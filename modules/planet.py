@@ -18,7 +18,4 @@ class Planet(Object):
         for i in range(len(ellipse.areaPoints)):
             self.object.keyframe_insert(data_path='constraints["Follow Path"].offset', frame=current_frame + i * frame_step)
             self.object.constraints["Follow Path"].offset = ellipse.areaPoints[i]
-        
-        #set frame to the previous one
-        bpy.context.scene.frame_set(current_frame)
 

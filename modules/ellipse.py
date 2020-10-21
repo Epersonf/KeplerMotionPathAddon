@@ -24,7 +24,7 @@ class Ellipse(Object):
     def get_focus(self):
         squareC = math.pow(self.a, 2) - math.pow(self.b, 2)
         c = math.sqrt(abs(squareC))
-        vec = [0, 0]
+        vec = mathutils.Vector((0, 0))
         if self.alternate_focus:
             c *= -1
         if self.a > self.b:
@@ -35,19 +35,19 @@ class Ellipse(Object):
     
     def generate_geometry(self):
         areaSingle = self.get_area() / self.divisions
-        dots, edges, self.areaPoints = [], [], []
         margin = 0 if (self.a > self.b) else 50
+        dots, edges, self.areaPoints = [], [], []
         
         focus = self.get_focus()
         polygon = Polygon(0, 0)
-        dots.append((0, 0, 0))
+        dots.append(mathutils.Vector((0, 0, 0)))
 
         i = 0
         h = 1
         while True:
             
             #get actual point position
-            actualPos = (self.a*math.cos(i) + focus[0], self.b*math.sin(i) + focus[1], 0)
+            actualPos = mathutils.Vector((self.a*math.cos(i) + focus[0], self.b*math.sin(i) + focus[1], 0))
 
             #add actualPos vertice
             dots.append(actualPos)
@@ -84,9 +84,6 @@ class Ellipse(Object):
         #store the last vertice percentage to follow path constraint
         self.areaPoints.append(margin + 100)
 
-        #store a placeholder value to fix bug
-        self.areaPoints.append(margin)
-
         #connects last vertice of the ellipse with the first one
         edges.append((len(dots)-1, 1))
         
@@ -95,6 +92,9 @@ class Ellipse(Object):
             "edges": edges
         }
     
+    def adjust_inclination():
+        print("WIP")
+
     def create_mesh(self):
         self.mesh = bpy.data.meshes.new(self.name + "Mesh")
         geometry = self.generate_geometry()

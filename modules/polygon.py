@@ -15,7 +15,7 @@ class Polygon:
         self.add_point(self.x, self.z)
     
     def add_point(self, x, z):
-        self.points.append((x, z))
+        self.points.append(mathutils.Vector((x, z)))
         if len(self.points) > 2:
             newTriangle = self.points[-2:]
             newTriangle.append(self.points[0])
