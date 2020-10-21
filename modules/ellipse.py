@@ -46,7 +46,7 @@ class Ellipse(Object):
         while True:
             
             #get actual point position
-            actualPos = (self.a*math.cos(i), 0, self.b*math.sin(i))
+            actualPos = (self.a*math.cos(i), self.b*math.sin(i), 0)
 
             #add actualPos vertice
             dots.append(actualPos)
@@ -59,7 +59,7 @@ class Ellipse(Object):
             edges.append((h, h + 1))
 
             #add a new point to the polygon
-            polygon.add_point(actualPos[0], actualPos[2])
+            polygon.add_point(actualPos[0], actualPos[1])
 
             #check if area is greater than single area size
             if polygon.get_area() >= areaSingle:
@@ -78,7 +78,7 @@ class Ellipse(Object):
         
         #create the last edge for the remaining area
         if self.drawArea:
-            edges.append((len(dots) - 1, 0))
+            edges.append((1, 0))
         
         #store the last vertice percentage to follow path constraint
         self.areaPoints.append(100)
@@ -87,7 +87,7 @@ class Ellipse(Object):
         self.areaPoints.append(0)
 
         #connects last vertice of the ellipse with the first one
-        edges.append((len(dots) - 1, 1))
+        edges.append((len(dots)-1, 1))
         
         return {
             "dots": dots,
@@ -102,8 +102,9 @@ class Ellipse(Object):
     
     def create_object(self):
         self.object = bpy.data.objects.new(self.name, self.mesh)
+
         self.object.location = self.pos
-        self.object.show_name = True
+
         self.mesh.update()
         return self.object
     
