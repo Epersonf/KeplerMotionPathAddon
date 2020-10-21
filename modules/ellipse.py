@@ -39,7 +39,7 @@ class Ellipse(Object):
         
         focus = self.get_focus()
         polygon = Polygon(focus[0], focus[1])
-        dots.append((focus[0], 0, focus[1]))
+        dots.append((focus[0], focus[1], 0))
 
         i = 0
         h = 1
