@@ -36,17 +36,18 @@ class Ellipse(Object):
     def generate_geometry(self):
         areaSingle = self.get_area() / self.divisions
         dots, edges, self.areaPoints = [], [], []
+        margin = 0 if (self.a > self.b) else 50
         
         focus = self.get_focus()
-        polygon = Polygon(focus[0], focus[1])
-        dots.append((focus[0], focus[1], 0))
+        polygon = Polygon(0, 0)
+        dots.append((0, 0, 0))
 
         i = 0
         h = 1
         while True:
             
             #get actual point position
-            actualPos = (self.a*math.cos(i), self.b*math.sin(i), 0)
+            actualPos = (self.a*math.cos(i) + focus[0], self.b*math.sin(i) + focus[1], 0)
 
             #add actualPos vertice
             dots.append(actualPos)
@@ -71,7 +72,7 @@ class Ellipse(Object):
                     edges.append((0, h))
                 
                 #store area vertice percentage
-                self.areaPoints.append(((i - self.imprecision) * 100)/(2 * math.pi))
+                self.areaPoints.append(margin + ((i - self.imprecision) * 100)/(2 * math.pi))
             
             h += 1
             i += self.imprecision
@@ -81,10 +82,10 @@ class Ellipse(Object):
             edges.append((1, 0))
         
         #store the last vertice percentage to follow path constraint
-        self.areaPoints.append(100)
+        self.areaPoints.append(margin + 100)
 
         #store a placeholder value to fix bug
-        self.areaPoints.append(0)
+        self.areaPoints.append(margin)
 
         #connects last vertice of the ellipse with the first one
         edges.append((len(dots)-1, 1))
