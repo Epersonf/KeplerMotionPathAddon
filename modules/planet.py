@@ -6,7 +6,7 @@ class Planet(Object):
     def __init__(self, obj):
         super().__init__(obj)
     
-    def animate_through_ellipse(self, ellipse, frame_step):
+    def animate_through_ellipse(self, ellipse, frame_step, clockwise):
 
         #get current frame
         current_frame = bpy.context.scene.frame_current
@@ -17,5 +17,9 @@ class Planet(Object):
         #for through all area points generating the animation
         for i in range(len(ellipse.areaPoints)):
             self.object.keyframe_insert(data_path='constraints["Follow Path"].offset', frame=current_frame + i * frame_step)
-            self.object.constraints["Follow Path"].offset = ellipse.areaPoints[i]
+            h = i
+            if !clockwise:
+                h = len(ellipse.areaPoints) - 1 - i
+            self.object.constraints["Follow Path"].offset = ellipse.areaPoints[h]
+
 

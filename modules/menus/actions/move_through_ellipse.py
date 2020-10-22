@@ -9,6 +9,7 @@ class MoveThroughEllipse(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}  # Enable undo for the operator.
 
     frame_step: bpy.props.IntProperty(name="Frames per area", default=24, min=1)
+    clockwise: bpy.props.BoolProperty(name="Clockwise", default=True)
     a: bpy.props.FloatProperty(name="Semi axis A", default=12, min=.1)
     b: bpy.props.FloatProperty(name="Semi axis B", default=12, min=.1)
     alternate_focus: bpy.props.BoolProperty(name="Alternate focus", default=True)
@@ -48,7 +49,7 @@ class MoveThroughEllipse(bpy.types.Operator):
         bpy.ops.object.editmode_toggle()
 
         #generate animation
-        planet.animate_through_ellipse(ellipse, self.frame_step)
+        planet.animate_through_ellipse(ellipse, self.frame_step, self.clockwise)
         
         #make animation cyclic
         planet.select(True)
