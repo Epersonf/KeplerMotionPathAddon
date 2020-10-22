@@ -92,9 +92,9 @@ class Ellipse(Object):
             "edges": edges
         }
     
-    def adjust_inclination(self, ascending_node, inclination, periapsis, true_anomaly):
+    def adjust_inclination(self, ascending_node, inclination, periapsis):
         self.select(True)
-        self.rotate(periapsis + true_anomaly, 'Z', 'NORMAL')
+        self.rotate(periapsis, 'Z', 'NORMAL')
         self.rotate(-inclination, 'X', 'NORMAL')
         self.rotate(ascending_node, 'Z', 'NORMAL')
 

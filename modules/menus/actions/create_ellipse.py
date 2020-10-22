@@ -15,7 +15,6 @@ class CreateEllipse(bpy.types.Operator):
     ascending_node: bpy.props.FloatProperty(name="Longitude of the ascending node", default=0)
     inclination: bpy.props.FloatProperty(name="Inclination", default=0)
     periapsis: bpy.props.FloatProperty(name="Argument of periapsis", default=0)
-    true_anomaly: bpy.props.FloatProperty(name="True anomaly", default=0)
 
     #Other
     alternate_focus: bpy.props.BoolProperty(name="Alternate focus", default=True)
@@ -41,8 +40,6 @@ class CreateEllipse(bpy.types.Operator):
         row.prop(self, "inclination")
         row = layout.row()
         row.prop(self, "periapsis")
-        row = layout.row()
-        row.prop(self, "true_anomaly")
 
         layout.separator()
 
@@ -63,7 +60,7 @@ class CreateEllipse(bpy.types.Operator):
         #Create Ellipse
         ellipse = Ellipse("Ellipse", pos[0], pos[1], pos[2], self.a, self.b, self.imprecision/1000, self.alternate_focus, self.divisions)
         #Adjust ellipse orientation
-        ellipse.adjust_inclination(self.ascending_node, self.inclination, self.periapsis, self.true_anomaly)
+        ellipse.adjust_inclination(self.ascending_node, self.inclination, self.periapsis)
         return {"FINISHED"}
 
 

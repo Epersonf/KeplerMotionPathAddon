@@ -20,7 +20,6 @@ class MoveThroughEllipse(bpy.types.Operator):
     ascending_node: bpy.props.FloatProperty(name="Longitude of the ascending node", default=0)
     inclination: bpy.props.FloatProperty(name="Inclination", default=0)
     periapsis: bpy.props.FloatProperty(name="Argument of periapsis", default=0)
-    true_anomaly: bpy.props.FloatProperty(name="True anomaly", default=0)
 
     #Other
     alternate_focus: bpy.props.BoolProperty(name="Alternate focus", default=True)
@@ -54,8 +53,6 @@ class MoveThroughEllipse(bpy.types.Operator):
         row.prop(self, "inclination")
         row = layout.row()
         row.prop(self, "periapsis")
-        row = layout.row()
-        row.prop(self, "true_anomaly")
 
         layout.separator()
 
@@ -109,7 +106,7 @@ class MoveThroughEllipse(bpy.types.Operator):
 
         #Adjust ellipse orientation
         planet.unselect()
-        ellipse.adjust_inclination(self.ascending_node, self.inclination, self.periapsis, self.true_anomaly)
+        ellipse.adjust_inclination(self.ascending_node, self.inclination, self.periapsis)
 
         #Reselection
         ellipse.unselect()
