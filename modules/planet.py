@@ -18,7 +18,7 @@ class Planet(Object):
         for i in range(len(ellipse.areaPoints)):
             self.object.keyframe_insert(data_path='constraints["Follow Path"].offset', frame=current_frame + i * frame_step)
             h = i
-            if !clockwise:
+            if not clockwise:
                 h = len(ellipse.areaPoints) - 1 - i
             self.object.constraints["Follow Path"].offset = ellipse.areaPoints[h]
 
