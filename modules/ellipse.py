@@ -92,8 +92,11 @@ class Ellipse(Object):
             "edges": edges
         }
     
-    def adjust_inclination():
-        print("WIP")
+    def adjust_inclination(self, ascending_node, inclination, periapsis, true_anomaly):
+        self.select(True)
+        self.rotate(periapsis + true_anomaly, 'Z', 'NORMAL')
+        self.rotate(-inclination, 'X', 'NORMAL')
+        self.rotate(ascending_node, 'Z', 'NORMAL')
 
     def create_mesh(self):
         self.mesh = bpy.data.meshes.new(self.name + "Mesh")
